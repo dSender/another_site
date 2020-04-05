@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+{%load static%}
+<html>	
+<head>
+	<meta charset="utf-8">
+	<meta lang="ru">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="{%static "reg_.css"%}">
+</head>
+<body>
+	<header>
+		<h2 class='display-2 pt-5 pb-5 ml-5'>Header</h2>
+	</header>
+	<div class='container-fluid '>
+		<div class='row forms justify-content-center'>
+			<form method='post' name='reg' class='left shadow-lg col-'>
+				<h3 class='display-3 p-5' align='center'>Registration</h3>
+					<div class='content-form shadow-lg' id='left'>
+						{%csrf_token%}
+						{{form.as_p}}
+						<input type="submit" value='Sign up' name='reg'>
+					</div>
+					{%if error_r%}
+					<p class='alert alert-warning'>{{error_r}}</p>
+					{%endif%}
+			</form>	
+			<div class='w-25'>
+				<h4 class='display-4 mt-5 _or_' align='center'>or</h4>
+			</div>
+			<form method='post' name='log' class='right shadow-lg col-'>
+				<h3 class='display-3 p-5' align='center'>Log in</h3>
+					<div class='content-form shadow-lg' id='left'>
+						{%csrf_token%}
+						{{form.as_p}}
+						<input type="submit" value='Sign in' name='log'>
+					</div>
+					{%if error_l%}
+					<p class='alert alert-warning'>{{error_l}}</p>
+					{%endif%}
+			</form>	
+		</div>
+	</div>
+	<footer>
+		<p class='p-4'> Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed elementum augue. Nunc facilisis placerat elit ac congue. Mauris venenatis hendrerit est, eget commodo orci scelerisque sed. Aliquam leo dolor, egestas sit amet molestie dictum, vehicula vitae augue. Integer ac nunc laoreet, varius leo nec, ultricies nunc. Vestibulum dictum lacinia facilisis. Praesent venenatis tincidunt velit, a ullamcorper nibh. Praesent orci velit, euismod vel lacus id, efficitur tincidunt velit. Duis nec maximus ipsum, vel scelerisque augue. Vivamus eget orci elit.
+
+		Curabitur volutpat imperdiet accumsan. Integer blandit sapien nec mi egestas viverra. Nunc nec neque eu orci porttitor sodales. Duis rhoncus vitae dui congue pulvinar. Mauris accumsan enim tempus blandit cursus. Nulla diam lorem, facilisis sed justo at, imperdiet rutrum lectus. Ut ante lacus, malesuada sit amet maximus mollis, laoreet sit amet dui. Phasellus volutpat molestie ipsum, et posuere arcu venenatis vitae. Vivamus ut urna laoreet, volutpat lectus sed, volutpat elit. Cras nec vehicula erat, in accumsan augue. Donec posuere sed magna at vulputate. 
+		</p>
+
+	</footer>
+</body>
+</html>
