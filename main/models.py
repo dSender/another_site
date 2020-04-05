@@ -1,3 +1,4 @@
+from PIL import Image
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.db.models.signals import post_save, pre_save
@@ -52,6 +53,17 @@ def clear_image_folder(instance, **kwargs):
         for i in os.listdir(path):
             if i != file[1]:
                 os.remove(os.path.join(path, i))
+            else:
+                _path = os.path.join(path, i)
+                im = Image.open(_path)
+                x, y = im.size[0], im.size[1]
+                x = x / (x / 500) if x > 500 else x * (500 / x)
+                y = y / (im.size[0] / 500) if y > 500 else y * (500 / im.size[0])
+                n_size = (int(x), int(y))
+                im = im.resize(n_size)
+                im.save(_path)
+
+
 
 
 class Post(models.Model):
