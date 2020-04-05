@@ -1,4 +1,3 @@
-from PIL import Image
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.db.models.signals import post_save, pre_save
@@ -27,13 +26,7 @@ class CustomManager(BaseUserManager):
 
 
 def tmp(instance, file):
-    try:
-        os.mkdir(str(instance.pk))
-    except:
-        pass
-    path = str(instance.pk) +'/' + str(file)
-    print(path)
-    return path
+    return os.path.join(str(instance.pk), str(file))
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -52,17 +45,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 @receiver(post_save, sender=CustomUser)
-def cut_an_image(instance, **kwargs):
-    if kwargs['update_fields'] is None:
-        try:
-            os.rmdir(str(instance.avatar))
-        except FileNotFoundError:
-            print('error')
-        else:
-            path = MEDIA_ROOT + '/' + str(instance.avatar)
-            im = Image.open(path)
-            im = im.resize((550, 250), Image.ANTIALIAS)
-            im.save(str(instance.avatar))
+def clear_image_folder(instance, **kwargs):
+    path = os.path.join(MEDIA_ROOT, str(instance.pk))
+    if len(os.listdir(path)) > 1:
+        file = os.path.split(str(instance.avatar))
+        for i in os.listdir(path):
+            if i != file[1]:
+                os.remove(os.path.join(path, i))
 
 
 class Post(models.Model):
