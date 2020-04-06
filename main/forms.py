@@ -24,3 +24,10 @@ class UserSettings(forms.ModelForm):
 	class Meta:
 		models = CustomUser
 		fields = ('avatar', )
+
+
+class AccountSettingsForm(forms.Form):
+    avatar = forms.FileField(required=False)
+    email = forms.EmailField(required=False)
+    password = forms.CharField(widget=forms.PasswordInput, required=False)
+    old_password = forms.CharField(widget=forms.PasswordInput, required=True)

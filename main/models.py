@@ -57,8 +57,8 @@ def clear_image_folder(instance, **kwargs):
                 _path = os.path.join(path, i)
                 im = Image.open(_path)
                 x, y = im.size[0], im.size[1]
-                x = x / (x / 500) if x > 500 else x * (500 / x)
-                y = y / (im.size[0] / 500) if y > 500 else y * (500 / im.size[0])
+                x = x / (x / 150) if x > 150 else x * (150 / x)
+                y = y / (im.size[0] / 150) if y > 150 else y * (150 / im.size[0])
                 n_size = (int(x), int(y))
                 im = im.resize(n_size)
                 im.save(_path)

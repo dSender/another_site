@@ -16,7 +16,7 @@
 	</header>
 	<div class='container-fluid '>
 		<div class='row forms justify-content-center'>
-			<form method='post' name='reg' class='left shadow-lg col-'>
+			<form method='post' name='reg' enctype="multipart/form-data" class='left shadow-lg col-'>
 				<h3 class='display-3 p-5' align='center'>Registration</h3>
 					<div class='content-form shadow-lg' id='left'>
 						{%csrf_token%}
@@ -30,7 +30,7 @@
 			<div class='w-25'>
 				<h4 class='display-4 mt-5 _or_' align='center'>or</h4>
 			</div>
-			<form method='post' name='log' class='right shadow-lg col-'>
+			<form method='post' name='log' enctype="multipart/form-data" class='right shadow-lg col-'>
 				<h3 class='display-3 p-5' align='center'>Log in</h3>
 					<div class='content-form shadow-lg' id='left'>
 						{%csrf_token%}
