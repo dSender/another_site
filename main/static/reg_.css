@@ -35,15 +35,17 @@ label{
 }
 
 header{
-	background-color: #f5f5f5;
+	background-color: #5A6268;
 	height: all;
+	color: white;
 }
 
 footer{
 	margin-top: 500px;
-	background-color: #f5f5f5;
+	background-color: #5A6268;
 	position: absolute;
 	height: auto;
+	color: white;
 }
 
 @media (max-width: 1333px) {

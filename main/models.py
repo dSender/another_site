@@ -15,6 +15,7 @@ class CustomManager(BaseUserManager):
         user.save()
         return user
 
+
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
@@ -48,21 +49,25 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 @receiver(post_save, sender=CustomUser)
 def clear_image_folder(instance, **kwargs):
     path = os.path.join(MEDIA_ROOT, str(instance.pk))
-    if len(os.listdir(path)) > 1:
-        file = os.path.split(str(instance.avatar))
-        for i in os.listdir(path):
-            if i != file[1]:
-                os.remove(os.path.join(path, i))
-            else:
-                _path = os.path.join(path, i)
-                im = Image.open(_path)
-                x, y = im.size[0], im.size[1]
-                x = x / (x / 150) if x > 150 else x * (150 / x)
-                y = y / (im.size[0] / 150) if y > 150 else y * (150 / im.size[0])
-                n_size = (int(x), int(y))
-                im = im.resize(n_size)
-                im.save(_path)
-
+    if kwargs['created'] is not True:
+        if len(os.listdir(path)) >= 1:
+            file = os.path.split(str(instance.avatar))
+            for i in os.listdir(path):
+                if i != file[1]:
+                    os.remove(os.path.join(path, i))
+                else:
+                    _path = os.path.join(path, i)
+                    im = Image.open(_path)
+                    x, y = im.size[0], im.size[1]
+                    y = y / (x / 300) if x > 300 else y * (300 / x)
+                    x = x / (x / 300) if x > 300 else x * (300 / x)
+                    n_size = (int(x), int(y))
+                    im = im.resize(n_size)
+                    if n_size[1] > 168:
+                        im = im.crop((0, 0, x, 168))
+                    im.save(_path)
+    else:
+        os.mkdir(path)
 
 
 

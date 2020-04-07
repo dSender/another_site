@@ -30,9 +30,9 @@ ALLOWED_HOSTS = []
 
 # Email settings
 
-EMAIL_HOST = ''
-EMAIL_PORT = 0
-EMAIL_HOST_USER = ''
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = 'dsrepup@mail.ru'
 EMAIL_HOST_PASSWORD = '94ufgh721896fgdr'
 EMAIL_USE_TLS = True
 

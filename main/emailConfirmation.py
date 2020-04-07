@@ -4,20 +4,11 @@ import string
 from mail.models import EmailSet
 from testing.settings import MAIN_ADR
 
-"""
-    send_mail(
-        'Your confirmation on the Header',
-        'To confirm your email click the link {}'.format(url),
-        'dsrepup@mail.ru',
-        ['{}'.format(mail)]
-    )
-"""
-
 
 def random_str(func):
-    def mail(email, passw):
-        url = func(email, passw)
-        EmailSet.objects.create(email=email, url=url, passw=passw)
+    def mail(email, passw, old_email=None):
+        url = func(email, passw, old_email=None)
+        EmailSet.objects.create(email=email, url=url, passw=passw, old_email=old_email)
         send_mail(
         'Your confirmation on the Header',
         'To confirm your email click the link {}'.format(MAIN_ADR + 'confirm/' + url),
@@ -28,7 +19,7 @@ def random_str(func):
 
 
 @random_str
-def send_confirmation(email, passw):
+def send_confirmation(email, passw, old_email=None):
     str = ''.join(random.choice(string.ascii_letters) for i in range(12))
     return str
 

@@ -12,11 +12,16 @@ class ConfirmPage(TemplateView):
 
     def get(self, request, *args, **kwargs):
         obj = get_object_or_404(EmailSet, **kwargs)
-        try:
-            us = CustomUser.objects.create_user(email=obj.email, password=obj.passw)
-        except IntegrityError:
-            return HttpResponse("You have already confirmed your email")
+        if obj.old_email is not None:
+            us = CustomUser.objects.get(email=obj.old_email)
+            us.email = obj.email
+            us.save()
         else:
-            login(request, us)
-            EmailSet.objects.get(email=obj.email).delete()
+            try:
+                us = CustomUser.objects.create_user(email=obj.email, password=obj.passw)
+            except IntegrityError:
+                return HttpResponse("You have already confirmed your email")
+            else:
+                login(request, us)
+                EmailSet.objects.filter(email=obj.email).delete()
         return redirect(MAIN_ADR)

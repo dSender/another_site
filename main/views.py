@@ -68,6 +68,29 @@ class AccountSettings(FormView):
 			return redirect(main_adr)
 
 	def form_valid(self, form):
-		print(form.cleaned_data)
-		return render(self.request, self.template_name, {'form': self.get_form_class()})
+		passw = form.cleaned_data['old_password']
+		user = authenticate(self.request, username=self.request.user.email, password=passw)
+		if user is not None:
+			avatar = form.cleaned_data['avatar']
+			n_password = form.cleaned_data['password']
+			email = form.cleaned_data['email']
+			current_user = CustomUser.objects.get(email=self.request.user.email)
+			if avatar is not None:
+				current_user.avatar = form.cleaned_data['avatar']
+			if n_password != '':
+				current_user.set_password(n_password)
+				user_with_new_passw = authenticate(self.request, username=self.request.user.email, password=n_password)
+				login(self.request, user_with_new_passw)
+			if email != '':
+				if self.request.user.email == email:
+					return render(self.request, self.template_name, {'form': self.get_form_class(), 'error': "It's your currect email"})
+				try:
+					CustomUser.objects.get(email=email)
+				except ObjectDoesNotExist:
+					send_confirmation(email, passw, self.request.user.email)
+				else:
+					return render(self.request, self.template_name, {'form': self.get_form_class(), 'error': 'Email you entered belong to an another account'})
+			current_user.save()
+			return redirect(self.get_success_url())
+		return render(self.request, self.template_name, {'form': self.get_form_class(), 'error': 'Wrong password'})
 

@@ -14,20 +14,30 @@
 	<div class='container shadow rounded mt-4'>
 		<div class='avatar row justify-content-md-center p-5'>
 			<div class='image_avatar col-'>
-				<img src="{{request.user.avatar.url}}" class='' alt="Current avatar">
+				{%if request.user.avatar%}
+				<img src="{{request.user.avatar.url}}" alt="Avatar" class='av rounded'>
+				{%else%}
+				No avatar
+				{%endif%}
 			</div>
 			<div class='form_vatar pl-5 col- pt-5'>
 				Change avatar
-				<form method="POST" enctype="multipart/form-data" class='pt-2'>
+				<form method="POST" enctype="multipart/form-data" class='pt-2 w-100'>
 					{%csrf_token%}
 					<p>{{form.avatar}}</p>
 					<p class='pt-4'>New email: {{form.email}}</p>
 					<p class='pt-4'>New password: {{form.password}}</p>
-					<p class='pt-4'>Password: {{form.old_password}}</p>
+					<p class='pt-4'>Current password: {{form.old_password}}</p>
+					{%if error%}
+					<p class='alert alert-warning'>{{error}}</p>
+					{%endif%}
 					<input class='btn btn-secondary' type='submit' value='Confirm'>
 				</form>
 			</div>
 		</div>
+		<form action='/' class='pb-5'>
+			<input class='btn btn-secondary' type='submit' value='Back'>
+		</form>
 	</div>
 </body>
 </html>

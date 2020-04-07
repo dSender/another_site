@@ -15,7 +15,11 @@
 		<div class='text-center pt-2 pl-2'>
 			{%if request.user.is_authenticated%}
 			<div class='photo'>
+				{%if request.user.avatar%}
 				<img src="{{request.user.avatar.url}}" alt="Avatar" class='av rounded'>
+				{%else%}
+				No avatar
+				{%endif%}
 			</div>
 			<p class='pt-3'>{{request.user}}</p>
 			<div class='dropdown pt-1'>
