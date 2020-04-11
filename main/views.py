@@ -3,8 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
-from .forms import CreateUserForm, AccountSettingsForm
-from .models import CustomUser
+from .forms import CreateUserForm, AccountSettingsForm, CreatePost
+from .models import CustomUser, Post
 from .emailConfirmation import send_confirmation
 from testing.settings import MAIN_ADR
 
@@ -18,11 +18,12 @@ def logout_(request):
 
 
 class PostList(ListView):
+	model = Post
 	success_url = main_adr
 	template_name = 'index.html'
 
 	def get(self, request, *args, **kwargs):
-		return render(self.request, 'index.html')
+		return render(self.request, 'index.html', {'posts': Post.objects.all()})
 
 
 class CreateUser(FormView):
@@ -94,3 +95,16 @@ class AccountSettings(FormView):
 			return redirect(self.get_success_url())
 		return render(self.request, self.template_name, {'form': self.get_form_class(), 'error': 'Wrong password'})
 
+
+class CreatePostView(FormView):
+	form_class = CreatePost
+	success_url = main_adr
+	template_name = 'postform.html'
+
+	def form_valid(self, form):
+		if not self.request.user.is_authenticated:
+			return redirect(self.get_success_url())
+		data = form.cleaned_data
+		data['author'] = self.request.user
+		Post.objects.create(**form.cleaned_data)
+		return redirect(self.get_success_url())

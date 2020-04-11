@@ -15,7 +15,6 @@ class CustomManager(BaseUserManager):
         user.save()
         return user
 
-
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
@@ -59,8 +58,8 @@ def clear_image_folder(instance, **kwargs):
                     _path = os.path.join(path, i)
                     im = Image.open(_path)
                     x, y = im.size[0], im.size[1]
-                    y = y / (x / 300) if x > 300 else y * (300 / x)
-                    x = x / (x / 300) if x > 300 else x * (300 / x)
+                    y = y / (x / 150) if x > 150 else y * (150 / x)
+                    x = x / (x / 150) if x > 150 else x * (150 / x)
                     n_size = (int(x), int(y))
                     im = im.resize(n_size)
                     if n_size[1] > 168:
@@ -70,10 +69,10 @@ def clear_image_folder(instance, **kwargs):
         os.mkdir(path)
 
 
-
 class Post(models.Model):
     title = models.CharField('Title', max_length=32)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    img = models.ImageField(upload_to=tmp)
     created_date = models.DateTimeField(auto_now_add=True)
     content = models.TextField(max_length=5000)
 

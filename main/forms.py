@@ -17,7 +17,7 @@ class CreateUserForm(forms.ModelForm):
 class CreatePost(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'content')
+        fields = ('title', 'content', 'img')
 
 
 class UserSettings(forms.ModelForm):
