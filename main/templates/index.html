@@ -41,8 +41,11 @@
 		</nav>
 		<div class='mt-3 text-center'>
 			{%for i in posts%}
-			{{i.created_date}}
-			{{i.title}}
+			<div>
+				{{i.created_date}}
+				{{i.title}}
+				{{i.content}}
+			</div>
 			{%endfor%}
 		</div>
 	</div>
