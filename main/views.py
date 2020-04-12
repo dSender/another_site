@@ -98,7 +98,7 @@ class AccountSettings(FormView):
 
 class CreatePostView(FormView):
 	form_class = CreatePost
-	success_url = main_adr
+	success_url = main_adr + '/post-create/prelook/'
 	template_name = 'postform.html'
 
 	def form_valid(self, form):
@@ -106,5 +106,7 @@ class CreatePostView(FormView):
 			return redirect(self.get_success_url())
 		data = form.cleaned_data
 		data['author'] = self.request.user
-		Post.objects.create(**form.cleaned_data)
-		return redirect(self.get_success_url())
+		print(data['img'])
+		return render(self.request, 'prelook.html', {'data': data})
+
+

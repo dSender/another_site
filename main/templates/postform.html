@@ -9,14 +9,15 @@
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="{% static "postform.css"%}">
+	<script type="text/javascript" src='{%static "ckeditor/ckeditor.js"%}'></script>
 </head>
 <body>
 	<div class='whaform'>
 		Create post
 	</div>
-	<div class='row'>
-		<div class='col-'>
-			<form method="POST" enctype="multipart/form-data" class='col-'>
+	<div>
+		<div>
+			<form method="POST" enctype="multipart/form-data">
 				{%csrf_token%}
 				<div class='field w-100'>
 					{{form.title}}
@@ -28,22 +29,9 @@
 				<div class='field'>
 					{{form.content}}
 				</div>
-				{%if error%}
-				<p class='alert alert-warning'>{{error}}</p>
-				{%endif%}
 				<button class='btn back btn-secondary'>Back</button>
 				<button type='submit' class='btn btn-secondary'>Confirm</button>
 			</form>
-		</div>
-		<div class='cont col- container'>
-			<div class='title ml-5'>
-				<p><h1 id='title'></h1></p>
-			</div>
-			<div class='cont'>
-				<p id='content-text-area'>
-					
-				</p>
-			</div>
 		</div>
 	</div>
 	<script type="text/javascript" src="{%static "postform.js"%}"></script>

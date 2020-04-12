@@ -19,3 +19,6 @@ form{
 h1,h2,h3,h4,h5{
 	display: inline;
 }
+.title{
+	word-wrap: break-word;
+}

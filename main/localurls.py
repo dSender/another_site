@@ -10,7 +10,7 @@ urlpatterns = [
     path('confirm/', TemplateView.as_view(template_name='email_confirm.html')),
     path('logout/', logout_),
     path('accountsettings/', AccountSettings.as_view()),
-    path('post-create/', CreatePostView.as_view())
+    path('post-create/', CreatePostView.as_view()),
 ]
 
 
