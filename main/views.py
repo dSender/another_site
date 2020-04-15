@@ -7,6 +7,9 @@ from .forms import CreateUserForm, AccountSettingsForm, CreatePost
 from .models import CustomUser, Post
 from .emailConfirmation import send_confirmation
 from testing.settings import MAIN_ADR
+from PIL import Image
+import os
+from testing.settings import MEDIA_ROOT
 
 
 main_adr = MAIN_ADR
@@ -23,7 +26,7 @@ class PostList(ListView):
 	template_name = 'index.html'
 
 	def get(self, request, *args, **kwargs):
-		return render(self.request, 'index.html', {'posts': Post.objects.all()})
+		return render(self.request, 'index.html', {'posts': Post.objects.filter(published=True)})
 
 
 class CreateUser(FormView):
@@ -106,7 +109,16 @@ class CreatePostView(FormView):
 			return redirect(self.get_success_url())
 		data = form.cleaned_data
 		data['author'] = self.request.user
-		print(data['img'])
-		return render(self.request, 'prelook.html', {'data': data})
+		post = Post(**data)
+		post.save()
+		path = os.path.join(MEDIA_ROOT, str(post.img))
+		im = Image.open(path)
+		x, y = im.size[0], im.size[1]
+		y = y / (x / 950) if x > 950 else y
+		x = x / (x / 950) if x > 950 else x
+		n_size = (int(x), int(y))
+		im = im.resize(n_size)  
+		im.save(path)
+		return render(self.request, 'prelook.html', {'post': post})
 
 

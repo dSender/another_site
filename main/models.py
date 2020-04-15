@@ -26,13 +26,13 @@ class CustomManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-def tmp(instance, file):
+def userav(instance, file):
     return os.path.join(str(instance.pk), str(file))
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    avatar = models.ImageField(verbose_name='Avatar', upload_to=tmp)
+    avatar = models.ImageField(verbose_name='Avatar', upload_to=userav)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
@@ -69,12 +69,17 @@ def clear_image_folder(instance, **kwargs):
         os.mkdir(path)
 
 
+def postav(instance, file):
+    return os.path.join(str(instance.author), str(file))
+
+
 class Post(models.Model):
     title = models.CharField('Title', max_length=32)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    img = models.ImageField(upload_to=tmp)
+    img = models.ImageField(upload_to=postav)
     created_date = models.DateTimeField(auto_now_add=True)
     content = models.TextField(max_length=5000)
+    published = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

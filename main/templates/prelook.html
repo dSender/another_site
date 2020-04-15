@@ -13,14 +13,18 @@
 <body>
 	<div class='cont container'>
 		<div class='title ml-5'>
-			<p><h1 id='title'>{{data.title}}</h1></p>
+			<p><h1 id='title'>{{post.title}}</h1></p>
 		</div>
-		<img src="{{data.img}}">
+		<img src="{{post.img.url}}">
 		<div class='cont'>
 			<p id='content-text-area'>
-				{{data.content|safe}}
+				{{post.content|safe}}
 			</p>
 		</div>
 	</div>
+	<form action='/postconfirm' method='post'>
+		<button type='submit' class='btn back btn-secondary'>Confirm</button>
+		<button class='btn back btn-secondary' type='submit'>Back</button>
+	</form>
 </body>
 </html>
