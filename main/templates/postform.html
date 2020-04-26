@@ -17,7 +17,7 @@
 	</div>
 	<div>
 		<div>
-			<form method="POST" enctype="multipart/form-data">
+			<form method="POST" enctype="multipart/form-data" class='pb-5'>
 				{%csrf_token%}
 				<div class='field w-100'>
 					{{form.title}}
@@ -29,8 +29,8 @@
 				<div class='field'>
 					{{form.content}}
 				</div>
-				<button class='btn back btn-secondary'>Back</button>
-				<button type='submit' class='btn btn-secondary'>Preview</button>
+				<button id='back' class='btn back btn-secondary'>Back</button>
+				<button type='submit' class='btn btn-secondary'>Save</button>
 			</form>
 		</div>
 	</div>

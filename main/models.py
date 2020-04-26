@@ -81,5 +81,8 @@ class Post(models.Model):
     content = models.TextField(max_length=5000)
     published = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['-created_date']
+
     def __str__(self):
         return self.title

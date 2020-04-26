@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
-from django.views.generic.edit import FormView
+from django.views.generic.base import View
+from django.views.generic.edit import FormView, UpdateView
 from .forms import CreateUserForm, AccountSettingsForm, CreatePost
 from .models import CustomUser, Post
 from .emailConfirmation import send_confirmation
@@ -119,6 +121,42 @@ class CreatePostView(FormView):
 		n_size = (int(x), int(y))
 		im = im.resize(n_size)  
 		im.save(path)
-		return render(self.request, 'prelook.html', {'post': post})
+		return redirect(main_adr + 'myposts/')
+
+
+class UserPosts(UpdateView):
+	model = Post
+	template_name = 'postlist.html'
+
+	def get(self, request, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return redirect(main_adr)
+		userPosts = Post.objects.filter(author=request.user).filter(published=False)
+		context = {'posts': userPosts}
+		return render(request, self.template_name, context)
+
+	def post(self, request, *args, **kwargs):
+		if request.is_ajax() and request.user.is_authenticated:
+			if request.POST.get('id'):
+				post_id = request.POST.get('id')
+				p = Post.objects.get(pk=post_id)
+				if p.author == request.user:
+					p.published = True if not p.published else False
+					p.save()
+			return HttpResponse()
+		else:
+			return HttpResponse('There is unknown error')
+
+
+class PostContent(View):
+	template_name = 'post.html'
+	model = Post
+
+	def get(self, request, *args, **kwargs):
+		post = get_object_or_404(Post, pk=kwargs['pk'])
+		if not post.published:
+			if not request.user.is_authenticated or request.user != post.author:
+				return redirect(main_adr)
+		return render(request, 'post.html', {'post': post})
 
 
